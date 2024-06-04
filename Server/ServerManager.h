@@ -13,15 +13,15 @@ public:
 
     private slots:
     void newClientConnectionReceived();
-        void onClientDisconnected();
+    void onClientDisconnected();
 
 signals:
     void newClientConnected(QTcpSocket *client);
     void clientDisconnected(QTcpSocket *client);
-private: //fields
+private: //поля
     QTcpServer *_server;
     QList<QTcpSocket *> _clients;
-private: //methods
+private: //методы
     void setupServer(ushort port);
 };
 
