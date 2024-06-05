@@ -11,10 +11,13 @@ public:
 
     enum MessageType{
         Text,
-        File,
         IsTyping,
         SetName,
-        SetStatus
+        SetStatus,
+        InitSendingFile,
+        AcceptSendingFile,
+        RejectSendingFile,
+        SendFile
     };
 
     enum Status{
@@ -30,6 +33,10 @@ public:
     QByteArray isTypingMessage();
     QByteArray setNameMessage(QString name);
     QByteArray setStatusMessage(Status status);
+    QByteArray setInitSendingFileMessage(QString fileName);
+    QByteArray setAcceptFileMessage();
+    QByteArray setRejectFileMessage();
+    QByteArray setFileMessage(QString fileName);
 
     void loadData(QByteArray data);
     QString message() const;
@@ -45,6 +52,12 @@ public:
 
     MessageType type() const;
 
+    QString fileName() const;
+
+    qint64 fileSize() const;
+
+    QByteArray fileData() const;
+
 signals:
     void messageChanged();
 
@@ -55,6 +68,9 @@ private:
     QString _message;
     QString _name;
     Status _status;
+    QString _fileName;
+    qint64 _fileSize;
+    QByteArray _fileData;
     Q_PROPERTY(QString message READ message WRITE setMessage RESET resetMessage NOTIFY messageChanged FINAL)
 };
 

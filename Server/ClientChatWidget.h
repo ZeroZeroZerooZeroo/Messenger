@@ -5,6 +5,7 @@
 
 #include <QWidget>
 #include <QTcpSocket>
+#include <qdir.h>
 namespace Ui {
 class ClientChatWidget;
 }
@@ -25,6 +26,12 @@ private slots:
     void textMessageReceived(QString message);
     void onTyping();
 
+    void onInitReceivingFile(QString clientName, QString fileName, qint64 fileSize);
+    void onFileSaved(QString path);
+    void on_lblOpenFolder_linkActivated(const QString &link);
+
+
+    void onClientNameChanged(QString name);
 signals:
     void clientNameChanged(QString name);
     void isTyping(QString message);
@@ -33,6 +40,7 @@ signals:
 private:
     Ui::ClientChatWidget *ui;
     ClientManager *_client;
+    QDir dir;
 };
 
 #endif // CLIENTCHATWIDGET_H

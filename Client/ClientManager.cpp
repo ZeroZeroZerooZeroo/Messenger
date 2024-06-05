@@ -36,6 +36,25 @@ void ClientManager::sendIsTyping()
 
 }
 
+void ClientManager::sendInitSendingFile(QString fileName)
+{
+    _tmpFileName = fileName;
+    _socket->write(_protocol.setInitSendingFileMessage(fileName));
+
+}
+
+void ClientManager::sendAcceptFile()
+{
+    _socket->write(_protocol.setAcceptFileMessage());
+
+}
+
+void ClientManager::sendRejectFile()
+{
+    _socket->write(_protocol.setRejectFileMessage());
+
+}
+
 void ClientManager::readyRead()
 {
     auto data = _socket->readAll();
@@ -53,6 +72,15 @@ void ClientManager::readyRead()
     case ChatProtocol::IsTyping:
         emit isTyping();
         break;
+    case ChatProtocol::InitSendingFile:
+        emit initReceivingFile(_protocol.name(),_protocol.fileName(),_protocol.fileSize());
+        break;
+    case ChatProtocol::AcceptSendingFile:
+        sendFile();
+        break;
+    case ChatProtocol::RejectSendingFile:
+        emit rejectReceivingFile();
+        break;
     default:
         break;
     }
@@ -63,6 +91,12 @@ void ClientManager::setupClient()
     connect(_socket,&QTcpSocket::connected,this,&ClientManager::connected);
     connect(_socket,&QTcpSocket::disconnected,this,&ClientManager::disconnected);
     connect(_socket,&QTcpSocket::readyRead,this,&ClientManager::readyRead);
+
+}
+
+void ClientManager::sendFile()
+{
+    _socket->write(_protocol.setFileMessage(_tmpFileName));
 
 }
 
