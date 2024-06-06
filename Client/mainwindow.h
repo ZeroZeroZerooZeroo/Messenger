@@ -32,6 +32,8 @@ private slots:
     void onRejectReceivingFile();
     void onInitReceivingFile(QString clientName,QString fileName,qint64 fileSize);
 
+    void on_lnMessage_textChanged(const QString &arg1);
+
 private:
     Ui::MainWindow *ui;
     ClientManager *_client;

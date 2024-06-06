@@ -9,7 +9,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->centralwidget->setEnabled(false);
+    //ui->centralwidget->setEnabled(false);
+     _client = new ClientManager();
 }
 
 MainWindow::~MainWindow()
@@ -19,12 +20,16 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionConnect_triggered()
 {
-    _client = new ClientManager();
+
     connect(_client , &ClientManager::connected, [this](){
         ui->centralwidget->setEnabled(true);
+        ui->btnSend->setEnabled(false);
+        ui->actionConnect->setEnabled(false);
+
     });
     connect(_client, &ClientManager::disconnected, [this](){
         ui->centralwidget->setEnabled(false);
+        ui->actionConnect->setEnabled(true);
     });
     connect(_client, &ClientManager::textMessageReceived, this, &MainWindow::dataReceived);
     connect(_client, &ClientManager::isTyping, this, &MainWindow::onTyping);
@@ -105,5 +110,13 @@ void MainWindow::onInitReceivingFile(QString clientName, QString fileName, qint6
     {
         _client->sendRejectFile();
     }
+}
+
+
+void MainWindow::on_lnMessage_textChanged(const QString &arg1)
+{
+    ui->btnSend->setEnabled(arg1.trimmed().length()>0);
+
+    _client->sendIsTyping();
 }
 
