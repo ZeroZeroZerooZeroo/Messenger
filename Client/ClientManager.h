@@ -5,13 +5,19 @@
 
 #include <QObject>
 #include <QTcpSocket>
+
 class ClientManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit ClientManager(QHostAddress ip = QHostAddress::LocalHost,ushort port =4500, QObject *parent = nullptr);
+    // Конструктор класса с заданием IP-адреса и порта
+    explicit ClientManager(QHostAddress ip = QHostAddress::LocalHost, ushort port = 4500, QObject *parent = nullptr);
+
+    // Метод для подключения к серверу
     void connectToServer();
-    void sendMessage(QString message);
+
+    // Методы для отправки различных типов сообщений
+    void sendMessage(QString message, QString receiver);
     void sendName(QString name);
     void sendStatus(ChatProtocol::Status status);
     void sendIsTyping();
@@ -20,27 +26,35 @@ public:
     void sendRejectFile();
 
 signals:
+    // Сигналы для различных событий
     void connected();
     void disconnected();
-//   void dataReceived(QByteArray data);
     void textMessageReceived(QString message);
     void isTyping();
     void nameChanged(QString name);
     void statusChanged(ChatProtocol::Status status);
     void rejectReceivingFile();
-    void initReceivingFile(QString clientName,QString fileName,qint64 fileSize);
+    void initReceivingFile(QString clientName, QString fileName, qint64 fileSize);
+    void connectionACK(QString myName, QStringList clientsName);
+    void newClientConnectedToServer(QString clienName);
+    void clientNameChanged(QString prevName, QString clientName);
+    void clientDisconnected(QString clientName);
 
 private slots:
+    // Слот, вызываемый при получении данных
     void readyRead();
+
 private:
     QTcpSocket *_socket;
     QHostAddress _ip;
     ushort _port;
     ChatProtocol _protocol;
     QString _tmpFileName;
-    void setupClient();
-    void sendFile();
 
+    // Метод для настройки клиента
+    void setupClient();
+    // Метод для отправки файла
+    void sendFile();
 };
 
 #endif // CLIENTMANAGER_H

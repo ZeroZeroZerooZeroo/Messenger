@@ -1,9 +1,11 @@
 #include "ChatItemWidget.h"
 #include "ui_ChatItemWidget.h"
 
-ChatItemWidget::ChatItemWidget(QWidget *parent)
-    : QWidget(parent)
-    , ui(new Ui::ChatItemWidget)
+#include <QTime>
+
+ChatItemWidget::ChatItemWidget(QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::ChatItemWidget)
 {
     ui->setupUi(this);
 }
@@ -13,13 +15,14 @@ ChatItemWidget::~ChatItemWidget()
     delete ui;
 }
 
-void ChatItemWidget::setMessage(QString message,bool isMyMessage)
+// Метод для установки сообщения
+void ChatItemWidget::setMessage(QString message, bool isMyMessage)
 {
     if(isMyMessage)
-    {
+        // Выравнивание текста сообщения по правому краю, если сообщение принадлежит пользователю
         ui->lblMessage->setAlignment(Qt::AlignRight);
-    }
+    // Установка текст сообщения
     ui->lblMessage->setText(message);
-    ui->lblTime->setText(QDateTime::currentDateTime().toString("HH:mm"));
+    // Установка текущее время
+    ui->lblTime->setText(QTime::currentTime().toString("HH:mm"));
 }
-

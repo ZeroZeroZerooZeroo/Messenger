@@ -3,33 +3,41 @@
 
 #include <QByteArray>
 #include <QString>
+#include <QStringList>
 
 
 class ChatProtocol
 {
 public:
-
-    enum MessageType{
-        Text,
-        IsTyping,
-        SetName,
-        SetStatus,
-        InitSendingFile,
-        AcceptSendingFile,
-        RejectSendingFile,
-        SendFile
+    // Перечисление типов сообщений
+    enum MessageType {
+        Text, // Текстовое сообщение
+        IsTyping, // Сообщение о наборе текста
+        SetName, // Сообщение для установки имени
+        SetStatus, // Сообщение для установки статуса
+        InitSendingFile, // Инициализация отправки файла
+        AcceptSendingFile, // Принятие отправки файла
+        RejectSendingFile, // Отклонение отправки файла
+        SendFile, // Отправка файла
+        ClientName, // Имя клиента
+        ConnectionACK, // Подтверждение подключения
+        NewClient, // Новый клиент
+        ClientDisconnected // Отключение клиента
     };
 
-    enum Status{
-        None,
-        Available,
-        Away,
-        Busy
+    // Перечисление статусов
+    enum Status {
+        None, // Нет статуса
+        Available, // Доступен
+        Away, // Нет на месте
+        Busy // Занят
     };
 
+    // Конструктор
     ChatProtocol();
 
-    QByteArray textMessage(QString message);
+    // Методы для создания сообщений различных типов
+    QByteArray textMessage(QString message, QString receiver);
     QByteArray isTypingMessage();
     QByteArray setNameMessage(QString name);
     QByteArray setStatusMessage(Status status);
@@ -39,31 +47,25 @@ public:
     QByteArray setFileMessage(QString fileName);
 
     void loadData(QByteArray data);
-    QString message() const;
-    void setMessage(const QString &newMessage);
-    void resetMessage();
 
-    QString name() const;
-
+    // Геттеры для различных данных
+    const QString &message() const;
+    const QString &name() const;
     Status status() const;
-
-
-
-
     MessageType type() const;
-
-    QString fileName() const;
-
+    const QString &fileName() const;
     qint64 fileSize() const;
-
-    QByteArray fileData() const;
-
-signals:
-    void messageChanged();
+    const QByteArray &fileData() const;
+    QString receiver() const;
+    const QString &clientName() const;
+    const QString &prevName() const;
+    const QStringList &clientsName() const;
+    const QString &myName() const;
 
 private:
-    QByteArray getData(MessageType type,QString data);
+    QByteArray getData(MessageType type, QString data);
 
+    // Поля для хранения данных
     MessageType _type;
     QString _message;
     QString _name;
@@ -71,7 +73,12 @@ private:
     QString _fileName;
     qint64 _fileSize;
     QByteArray _fileData;
-    Q_PROPERTY(QString message READ message WRITE setMessage RESET resetMessage NOTIFY messageChanged FINAL)
+    QString _receiver;
+    QString _clientName;
+    QString _prevName;
+    QStringList _clientsName;
+    QString _myName;
+
 };
 
-#endif // CHATPROTOCOL_H
+#endif

@@ -2,13 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "ChatProtocol.h"
 #include "ServerManager.h"
+#include "ClientChatWidget.h"
 
 QT_BEGIN_NAMESPACE
-namespace Ui {
-class MainWindow;
-}
+namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow
@@ -19,15 +17,24 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 private slots:
+    // Обработчик события подключения нового клиента
     void newClientConnected(QTcpSocket *client);
+
+    // СОбработчик события отключения клиента
     void clientDisconnected(QTcpSocket *client);
-    void setClientName(QString name);
+
+    // СОбработчик изменения имени клиента
+    void setClientName(QString prevName, QString name);
+
+    // Обработчик изменения статуса клиента
     void setClientStatus(ChatProtocol::Status status);
+
+    // Обработчик запроса на закрытие вкладки чата клиента
+    void on_tbClientsChat_tabCloseRequested(int index);
+
 private:
     Ui::MainWindow *ui;
     ServerManager *_server;
-
-private://методы
-    void setupServer();
+    void seupServer();
 };
 #endif // MAINWINDOW_H

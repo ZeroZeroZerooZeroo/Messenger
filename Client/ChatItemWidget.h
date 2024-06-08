@@ -2,7 +2,7 @@
 #define CHATITEMWIDGET_H
 
 #include <QWidget>
-#include <QDateTime>
+
 namespace Ui {
 class ChatItemWidget;
 }
@@ -14,10 +14,11 @@ class ChatItemWidget : public QWidget
 public:
     explicit ChatItemWidget(QWidget *parent = nullptr);
     ~ChatItemWidget();
-    void setMessage(QString message,bool isMyMessage = false);
+    // Метод для установки сообщения в виджете
+    void setMessage(QString message, bool isMyMessage = false);
 
 private:
     Ui::ChatItemWidget *ui;
 };
 
-#endif // CHATITEMWIDGET_H
+#endif

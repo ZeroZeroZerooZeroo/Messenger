@@ -3,9 +3,10 @@
 
 #include "ClientManager.h"
 
-#include <QWidget>
+#include <QDir>
 #include <QTcpSocket>
-#include <qdir.h>
+#include <QWidget>
+
 namespace Ui {
 class ClientChatWidget;
 }
@@ -15,32 +16,29 @@ class ClientChatWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit ClientChatWidget(QTcpSocket *client,QWidget *parent = nullptr);
+    explicit ClientChatWidget(QTcpSocket *client, QWidget *parent = nullptr);
+    void disconnect(); // Метод для отключения клиента
     ~ClientChatWidget();
-
 private slots:
-
-    void on_btnSend_clicked();
+    // Слоты , которые вызываются в ответ на сигналы
     void clientDisconnected();
-
-    void textMessageReceived(QString message);
+    void on_btnSend_clicked();
+    void textMessageReceived(QString message, QString receiver);
     void onTyping();
-
     void onInitReceivingFile(QString clientName, QString fileName, qint64 fileSize);
     void onFileSaved(QString path);
     void on_lblOpenFolder_linkActivated(const QString &link);
-
-
-    void onClientNameChanged(QString name);
+    void onClientNameChanged(QString prevName, QString name);
 signals:
-    void clientNameChanged(QString name);
+    // Сигналы, для оповещения других частей программы о происходящих событиях
+    void clientNameChanged(QString prevName, QString name);
     void isTyping(QString message);
     void statusChanged(ChatProtocol::Status status);
-
+    void textForOtherClients(QString message, QString receiver, QString sender);
 private:
     Ui::ClientChatWidget *ui;
     ClientManager *_client;
     QDir dir;
 };
 
-#endif // CLIENTCHATWIDGET_H
+#endif

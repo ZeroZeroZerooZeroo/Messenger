@@ -4,32 +4,37 @@
 #include <QByteArray>
 #include <QString>
 
-
 class ChatProtocol
 {
 public:
-
-    enum MessageType{
-        Text,
-        IsTyping,
-        SetName,
-        SetStatus,
-        InitSendingFile,
-        AcceptSendingFile,
-        RejectSendingFile,
-        SendFile
+    // Перечисление типов сообщений
+    enum MessageType {
+        Text, // Текстовое сообщение
+        IsTyping, // Сообщение о наборе текста
+        SetName, // Сообщение для установки имени
+        SetStatus, // Сообщение для установки статуса
+        InitSendingFile, // Инициализация отправки файла
+        AcceptSendingFile, // Принятие отправки файла
+        RejectSendingFile, // Отклонение отправки файла
+        SendFile, // Отправка файла
+        ClientName, // Имя клиента
+        ConnectionACK, // Подтверждение подключения
+        NewClient, // Новый клиент
+        ClientDisconnected // Отключение клиента
     };
 
-    enum Status{
-        None,
-        Available,
-        Away,
-        Busy
+    // Перечисление статусов
+    enum Status {
+        None, // Нет статуса
+        Available, // Доступен
+        Away, // Нет на месте
+        Busy // Занят
     };
 
     ChatProtocol();
 
-    QByteArray textMessage(QString message);
+    // Методы для создания различных сообщений
+    QByteArray textMessage(QString message, QString receiver);
     QByteArray isTypingMessage();
     QByteArray setNameMessage(QString name);
     QByteArray setStatusMessage(Status status);
@@ -37,33 +42,27 @@ public:
     QByteArray setAcceptFileMessage();
     QByteArray setRejectFileMessage();
     QByteArray setFileMessage(QString fileName);
+    QByteArray setClientNameMessage(QString prevName, QString name);
+    QByteArray setConnectionACKMessage(QString clientName, QStringList otherClients);
+    QByteArray setNewClientMessage(QString clientName);
+    QByteArray setClinetDisconnectedMessage(QString clientName);
 
     void loadData(QByteArray data);
-    QString message() const;
-    void setMessage(const QString &newMessage);
-    void resetMessage();
 
-    QString name() const;
-
+    // Геттеры для полей класса
+    const QString &message() const;
+    const QString &name() const;
     Status status() const;
-
-
-
-
     MessageType type() const;
-
-    QString fileName() const;
-
+    const QString &fileName() const;
     qint64 fileSize() const;
-
-    QByteArray fileData() const;
-
-signals:
-    void messageChanged();
+    const QByteArray &fileData() const;
+    const QString &receiver() const;
 
 private:
-    QByteArray getData(MessageType type,QString data);
+    QByteArray getData(MessageType type, QString data);
 
+    // Поля класса для хранения данных сообщений
     MessageType _type;
     QString _message;
     QString _name;
@@ -71,7 +70,8 @@ private:
     QString _fileName;
     qint64 _fileSize;
     QByteArray _fileData;
-    Q_PROPERTY(QString message READ message WRITE setMessage RESET resetMessage NOTIFY messageChanged FINAL)
+    QString _receiver;
+
 };
 
 #endif // CHATPROTOCOL_H
