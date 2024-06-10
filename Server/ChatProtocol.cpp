@@ -1,8 +1,5 @@
 #include "ChatProtocol.h"
 
-#include <QFileInfo>
-#include <QIODevice>
-
 ChatProtocol::ChatProtocol()
 {
 
@@ -133,6 +130,7 @@ QByteArray ChatProtocol::getData(MessageType type, QString data)
     return ba;
 }
 
+//Реализации геттеров
 const QString &ChatProtocol::receiver() const
 {
     return _receiver;

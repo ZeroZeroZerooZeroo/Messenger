@@ -9,9 +9,10 @@
 class ClientManager : public QObject
 {
     Q_OBJECT
+
 public:
     // Конструктор класса с заданием IP-адреса и порта
-    explicit ClientManager(QHostAddress ip = QHostAddress::LocalHost, ushort port = 4500, QObject *parent = nullptr);
+    explicit ClientManager(QHostAddress ip = QHostAddress("192.168.0.12"), ushort port = 4500, QObject *parent = nullptr);
 
     // Метод для подключения к серверу
     void connectToServer();
@@ -26,6 +27,7 @@ public:
     void sendRejectFile();
 
 signals:
+
     // Сигналы для различных событий
     void connected();
     void disconnected();
@@ -41,10 +43,12 @@ signals:
     void clientDisconnected(QString clientName);
 
 private slots:
+
     // Слот, вызываемый при получении данных
     void readyRead();
 
 private:
+
     QTcpSocket *_socket;
     QHostAddress _ip;
     ushort _port;
@@ -53,8 +57,9 @@ private:
 
     // Метод для настройки клиента
     void setupClient();
+
     // Метод для отправки файла
     void sendFile();
 };
 
-#endif // CLIENTMANAGER_H
+#endif

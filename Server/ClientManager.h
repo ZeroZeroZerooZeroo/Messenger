@@ -5,13 +5,16 @@
 
 #include <QObject>
 #include <QTcpSocket>
+#include <QDir>
 
 class ClientManager : public QObject
 {
     Q_OBJECT
 public:
+
     // Конструктор с параметрами IP и порта для нового подключения клиента
-    explicit ClientManager(QHostAddress ip = QHostAddress::LocalHost, ushort port = 4500, QObject *parent = nullptr);
+    explicit ClientManager(QHostAddress ip = QHostAddress::Any , ushort port = 4500, QObject *parent = nullptr);
+
      // Конструктор с параметром сокета для использования уже существующего подключения
     explicit ClientManager(QTcpSocket *client, QObject *parent = nullptr);
 
@@ -37,6 +40,7 @@ public:
     void sendRejectFile();
 
 signals:
+
     // Сигнал об успешном подключении к серверу
     void connected();
 
@@ -63,11 +67,14 @@ signals:
 
     // Сигнал о сохранении файла
     void fileSaved(QString path);
+
 private slots:
+
     // Слот для обработки данных, готовых для чтения
     void readyRead();
 
 private:
+
     QTcpSocket *_socket;
     QHostAddress _ip;
     ushort _port;

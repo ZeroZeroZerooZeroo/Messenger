@@ -35,7 +35,7 @@ public:
     QGroupBox *grpClients;
     QVBoxLayout *verticalLayout;
     QListWidget *lstClients;
-    QPushButton *pushButton;
+    QPushButton *btnDisconnectAll;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -43,13 +43,15 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName("MainWindow");
-        MainWindow->resize(629, 340);
+        MainWindow->resize(629, 346);
+        MainWindow->setStyleSheet(QString::fromUtf8(""));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName("centralwidget");
         horizontalLayout = new QHBoxLayout(centralwidget);
         horizontalLayout->setObjectName("horizontalLayout");
         grpChats = new QGroupBox(centralwidget);
         grpChats->setObjectName("grpChats");
+        grpChats->setStyleSheet(QString::fromUtf8(""));
         verticalLayout_2 = new QVBoxLayout(grpChats);
         verticalLayout_2->setObjectName("verticalLayout_2");
         tbClientsChat = new QTabWidget(grpChats);
@@ -70,10 +72,10 @@ public:
 
         verticalLayout->addWidget(lstClients);
 
-        pushButton = new QPushButton(grpClients);
-        pushButton->setObjectName("pushButton");
+        btnDisconnectAll = new QPushButton(grpClients);
+        btnDisconnectAll->setObjectName("btnDisconnectAll");
 
-        verticalLayout->addWidget(pushButton);
+        verticalLayout->addWidget(btnDisconnectAll);
 
 
         horizontalLayout->addWidget(grpClients);
@@ -83,7 +85,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 629, 22));
+        menubar->setGeometry(QRect(0, 0, 629, 25));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName("statusbar");
@@ -97,9 +99,9 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "Server", nullptr));
-        grpChats->setTitle(QCoreApplication::translate("MainWindow", "Chats", nullptr));
-        grpClients->setTitle(QCoreApplication::translate("MainWindow", "Clients", nullptr));
-        pushButton->setText(QCoreApplication::translate("MainWindow", "Disconnect All", nullptr));
+        grpChats->setTitle(QCoreApplication::translate("MainWindow", "\320\247\320\260\321\202\321\213", nullptr));
+        grpClients->setTitle(QCoreApplication::translate("MainWindow", "\320\232\320\273\320\270\320\265\320\275\321\202\321\213", nullptr));
+        btnDisconnectAll->setText(QCoreApplication::translate("MainWindow", "\320\236\321\202\320\272\320\273\321\216\321\207\320\270\321\202\321\214 \320\262\321\201\320\265\321\205", nullptr));
     } // retranslateUi
 
 };

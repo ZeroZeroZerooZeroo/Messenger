@@ -13,7 +13,7 @@ QByteArray ChatProtocol::textMessage(QString message, QString receiver)
     QByteArray ba;
     QDataStream out(&ba, QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_6_0);
-    // Записывается тип сообщения, получателя и само сообщение
+    // Записывается тип сообщения, получатель и само сообщение
     out << Text << receiver << message;
     return ba;
 }
@@ -58,7 +58,6 @@ QByteArray ChatProtocol::setRejectFileMessage()
 {
     return getData(RejectSendingFile, "");
 }
-
 
 QByteArray ChatProtocol::setFileMessage(QString fileName)
 {

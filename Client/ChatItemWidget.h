@@ -12,13 +12,18 @@ class ChatItemWidget : public QWidget
     Q_OBJECT
 
 public:
+
     explicit ChatItemWidget(QWidget *parent = nullptr);
+
     ~ChatItemWidget();
-    // Метод для установки сообщения в виджете
+
+    // Метод для отображения сообщения в виджете
     void setMessage(QString message, bool isMyMessage = false);
 
 private:
+
     Ui::ChatItemWidget *ui;
+
 };
 
 #endif

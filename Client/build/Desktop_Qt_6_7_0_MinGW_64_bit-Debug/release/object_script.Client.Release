@@ -1,0 +1,10 @@
+release/ChatItemWidget.o
+release/ChatProtocol.o
+release/ClientDatabaseManager.o
+release/ClientManager.o
+release/main.o
+release/mainwindow.o
+release/moc_ChatItemWidget.o
+release/moc_ClientDatabaseManager.o
+release/moc_ClientManager.o
+release/moc_mainwindow.o

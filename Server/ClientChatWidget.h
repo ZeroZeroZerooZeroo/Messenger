@@ -6,6 +6,12 @@
 #include <QDir>
 #include <QTcpSocket>
 #include <QWidget>
+#include <QMessageBox>
+#include <QDesktopServices>
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
+#include <QDebug>
 
 namespace Ui {
 class ClientChatWidget;
@@ -17,9 +23,19 @@ class ClientChatWidget : public QWidget
 
 public:
     explicit ClientChatWidget(QTcpSocket *client, QWidget *parent = nullptr);
+
     void disconnect(); // Метод для отключения клиента
+
     ~ClientChatWidget();
+
+    // Метод загрузки истории сообщений
+    void loadMessageHistory(const QString &clientName);
+
+    //Метод очистки окна сообщений
+    void clearMessageHistory();
+
 private slots:
+
     // Слоты , которые вызываются в ответ на сигналы
     void clientDisconnected();
     void on_btnSend_clicked();
@@ -29,13 +45,17 @@ private slots:
     void onFileSaved(QString path);
     void on_lblOpenFolder_linkActivated(const QString &link);
     void onClientNameChanged(QString prevName, QString name);
+
 signals:
+
     // Сигналы, для оповещения других частей программы о происходящих событиях
     void clientNameChanged(QString prevName, QString name);
     void isTyping(QString message);
     void statusChanged(ChatProtocol::Status status);
     void textForOtherClients(QString message, QString receiver, QString sender);
+
 private:
+
     Ui::ClientChatWidget *ui;
     ClientManager *_client;
     QDir dir;

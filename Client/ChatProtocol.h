@@ -9,6 +9,7 @@
 class ChatProtocol
 {
 public:
+
     // Перечисление типов сообщений
     enum MessageType {
         Text, // Текстовое сообщение
@@ -46,6 +47,7 @@ public:
     QByteArray setRejectFileMessage();
     QByteArray setFileMessage(QString fileName);
 
+    // Метод для загрузки данных
     void loadData(QByteArray data);
 
     // Геттеры для различных данных
@@ -63,6 +65,8 @@ public:
     const QString &myName() const;
 
 private:
+
+    // Метод для сериализации данных
     QByteArray getData(MessageType type, QString data);
 
     // Поля для хранения данных

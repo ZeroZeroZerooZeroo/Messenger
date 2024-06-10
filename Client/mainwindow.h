@@ -1,13 +1,22 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
 #include "ClientManager.h"
 
+#include <QMainWindow>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
+#include <QDebug>
+
 QT_BEGIN_NAMESPACE
+
 namespace Ui {
 class MainWindow;
 }
+
 QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow
@@ -23,6 +32,7 @@ private slots:
     // Обработчик нажатия на "Connect" в меню
     void on_actionConnect_triggered();
 
+    // Обраь=ботчик кнопки отправки
     void on_btnSend_clicked();
 
     // Обработчик полученных данных
@@ -58,9 +68,14 @@ private slots:
     // Обработчик оповещения о отключении клиента
     void onClientDisconnected(QString clientName);
 
+
+    void on_actionExot_triggered();
+
 private:
     Ui::MainWindow *ui;
     ClientManager *_client;
     void setupClient();
+    QString sender;
+    void requestMessageHistory(QString);
 };
 #endif

@@ -2,6 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QFile>
+#include <QTextStream>
+#include <QDateTime>
 #include "ServerManager.h"
 #include "ClientChatWidget.h"
 
@@ -14,9 +17,16 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+
     MainWindow(QWidget *parent = nullptr);
+
     ~MainWindow();
+
+    // Метод для записи в файл логов
+    void logToFile(const QString &message);
+
 private slots:
+
     // Обработчик события подключения нового клиента
     void newClientConnected(QTcpSocket *client);
 
@@ -32,9 +42,13 @@ private slots:
     // Обработчик запроса на закрытие вкладки чата клиента
     void on_tbClientsChat_tabCloseRequested(int index);
 
+    // Обработчик запроса на отключение всех клиентов
+    void on_btnDisconnectAll_clicked();
+
 private:
+
     Ui::MainWindow *ui;
     ServerManager *_server;
     void seupServer();
 };
-#endif // MAINWINDOW_H
+#endif

@@ -22,44 +22,44 @@ void ClientManager::sendMessage(QString message, QString receiver)
 
 void ClientManager::sendName(QString name)
 {
-    // Отправка сообщения об изменении имени
+    // Отправка серверу сообщения об изменении имени
     _socket->write(_protocol.setNameMessage(name));
 }
 
 void ClientManager::sendStatus(ChatProtocol::Status status)
 {
-    // Отправка сообщения об изменении статуса
+    // Отправка серверу сообщения об изменении статуса
     _socket->write(_protocol.setStatusMessage(status));
 }
 
 void ClientManager::sendIsTyping()
 {
-    // Отправка сообщения о наборе текста
+    // Отправка серверу сообщения о наборе текста
     _socket->write(_protocol.isTypingMessage());
 }
 
 void ClientManager::sendInitSendingFile(QString fileName)
 {
     _tmpFileName = fileName;  // Сохранение имени файла во временное поле
-    _socket->write(_protocol.setInitSendingFileMessage(fileName));  // Отправка сообщения об инициализации отправки файла
+    _socket->write(_protocol.setInitSendingFileMessage(fileName));  // Отправка серверу сообщения об инициализации отправки файла
 }
 
 void ClientManager::sendAcceptFile()
 {
-    // Отправка сообщения о принятии файла
+    // Отправка серверу  сообщения о принятии файла
     _socket->write(_protocol.setAcceptFileMessage());
 }
 
 void ClientManager::sendRejectFile()
 {
-    // Отправка сообщения об отклонении файла
+    // Отправка серверу сообщения об отклонении файла
     _socket->write(_protocol.setRejectFileMessage());
 }
 
 void ClientManager::readyRead()
 {
     auto data = _socket->readAll();  // Чтение всех данных из сокета
-    _protocol.loadData(data);  // Загрузка данных в объект протокола
+    _protocol.loadData(data);  // Загрузка данных
     switch (_protocol.type()) {
     case ChatProtocol::Text:
         emit textMessageReceived(_protocol.message());  // Отправка сигнала о получении текстового сообщения

@@ -21,25 +21,25 @@ class Ui_ChatItemWidget
 {
 public:
     QVBoxLayout *verticalLayout;
-    QLabel *lblMessage;
     QLabel *lblTime;
+    QLabel *lblMessage;
 
     void setupUi(QWidget *ChatItemWidget)
     {
         if (ChatItemWidget->objectName().isEmpty())
             ChatItemWidget->setObjectName("ChatItemWidget");
-        ChatItemWidget->resize(380, 73);
+        ChatItemWidget->resize(421, 175);
         verticalLayout = new QVBoxLayout(ChatItemWidget);
         verticalLayout->setObjectName("verticalLayout");
+        lblTime = new QLabel(ChatItemWidget);
+        lblTime->setObjectName("lblTime");
+
+        verticalLayout->addWidget(lblTime);
+
         lblMessage = new QLabel(ChatItemWidget);
         lblMessage->setObjectName("lblMessage");
 
         verticalLayout->addWidget(lblMessage);
-
-        lblTime = new QLabel(ChatItemWidget);
-        lblTime->setObjectName("lblTime");
-
-        verticalLayout->addWidget(lblTime, 0, Qt::AlignRight);
 
 
         retranslateUi(ChatItemWidget);
@@ -50,8 +50,8 @@ public:
     void retranslateUi(QWidget *ChatItemWidget)
     {
         ChatItemWidget->setWindowTitle(QCoreApplication::translate("ChatItemWidget", "Form", nullptr));
-        lblMessage->setText(QCoreApplication::translate("ChatItemWidget", "TextLabel", nullptr));
         lblTime->setText(QCoreApplication::translate("ChatItemWidget", "TextLabel", nullptr));
+        lblMessage->setText(QCoreApplication::translate("ChatItemWidget", "TextLabel", nullptr));
     } // retranslateUi
 
 };

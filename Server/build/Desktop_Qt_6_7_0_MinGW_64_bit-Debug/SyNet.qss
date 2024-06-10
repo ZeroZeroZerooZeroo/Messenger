@@ -1,0 +1,78 @@
+/* CSS для общего окна приложения */
+QMainWindow {
+    background-color: #FFFFFF;
+}
+
+
+/* Стиль для полей ввода */
+QLineEdit, QTextEdit {
+    background-color: #D3D3D3;             /* Серый цвет для полей ввода */
+    color: #000000;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+QLineEdit:disabled, QTextEdit:disabled {
+    background-color: #A9A9A9;             /* Серый цвет для неактивных полей ввода */
+}
+
+/* Стиль для комбинированных боксов */
+QComboBox {
+    background-color: #D3D3D3;             /* Серый цвет для активных комбинированных боксов */
+    color: #000000;
+    border-radius: 5px;
+    padding: 5px;    
+}
+
+QComboBox:disabled {
+    background-color: #A9A9A9;             /* Серый цвет для неактивных комбинированных боксов */
+}
+
+/* Стиль для меток */
+QLabel {
+    color: #000000;
+    font: bold 12px;
+}
+
+/* Поля, кнопки и комбинированные боксы будут растянуты на всю ширину */
+QWidget {
+font: 14px Arial, sans-serif;
+    
+}
+
+
+/*-----QPushButton-----*/
+QPushButton
+{
+	background-color: #50C878;
+	color: #fff;
+	font-size: 13px;
+	font-weight: bold;
+	border-top-right-radius: 15px;
+	border-top-left-radius: 0px;
+	border-bottom-right-radius: 0px;
+	border-bottom-left-radius: 15px;
+	padding: 10px;
+
+}
+
+
+QPushButton::disabled
+{
+	background-color: #5c5c5c;
+
+}
+
+
+QPushButton::hover
+{
+	background-color: #5564f2;
+
+}
+
+
+QPushButton::pressed
+{
+	background-color: #3d4ef2;
+
+}

@@ -1,0 +1,10 @@
+debug/ChatItemWidget.o
+debug/ChatProtocol.o
+debug/ClientDatabaseManager.o
+debug/ClientManager.o
+debug/main.o
+debug/mainwindow.o
+debug/moc_ChatItemWidget.o
+debug/moc_ClientDatabaseManager.o
+debug/moc_ClientManager.o
+debug/moc_mainwindow.o

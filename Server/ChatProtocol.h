@@ -3,10 +3,13 @@
 
 #include <QByteArray>
 #include <QString>
+#include <QFileInfo>
+#include <QIODevice>
 
 class ChatProtocol
 {
 public:
+
     // Перечисление типов сообщений
     enum MessageType {
         Text, // Текстовое сообщение
@@ -33,7 +36,7 @@ public:
 
     ChatProtocol();
 
-    // Методы для создания различных сообщений
+    // Методы для различных сообщений
     QByteArray textMessage(QString message, QString receiver);
     QByteArray isTypingMessage();
     QByteArray setNameMessage(QString name);
@@ -47,6 +50,7 @@ public:
     QByteArray setNewClientMessage(QString clientName);
     QByteArray setClinetDisconnectedMessage(QString clientName);
 
+    // Метод загрузки данных
     void loadData(QByteArray data);
 
     // Геттеры для полей класса
@@ -60,6 +64,7 @@ public:
     const QString &receiver() const;
 
 private:
+    // Метод для сериализации данных
     QByteArray getData(MessageType type, QString data);
 
     // Поля класса для хранения данных сообщений
@@ -71,7 +76,6 @@ private:
     qint64 _fileSize;
     QByteArray _fileData;
     QString _receiver;
-
 };
 
-#endif // CHATPROTOCOL_H
+#endif

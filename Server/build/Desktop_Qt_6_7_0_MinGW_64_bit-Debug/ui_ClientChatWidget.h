@@ -38,6 +38,10 @@ public:
         if (ClientChatWidget->objectName().isEmpty())
             ClientChatWidget->setObjectName("ClientChatWidget");
         ClientChatWidget->resize(400, 300);
+        ClientChatWidget->setStyleSheet(QString::fromUtf8("ClientChatWidget\n"
+"{\n"
+"backgroung-color:rgb(22,25,31);\n"
+"}"));
         verticalLayout = new QVBoxLayout(ClientChatWidget);
         verticalLayout->setObjectName("verticalLayout");
         lstMessages = new QListWidget(ClientChatWidget);
@@ -81,9 +85,9 @@ public:
     void retranslateUi(QWidget *ClientChatWidget)
     {
         ClientChatWidget->setWindowTitle(QCoreApplication::translate("ClientChatWidget", "Form", nullptr));
-        lblMessage->setText(QCoreApplication::translate("ClientChatWidget", "Message:", nullptr));
-        btnSend->setText(QCoreApplication::translate("ClientChatWidget", "Send", nullptr));
-        lblOpenFolder->setText(QCoreApplication::translate("ClientChatWidget", "<html><head/><body><p><a href=\"#\"><span style=\" text-decoration: underline; color:#007af4;\">Open</span></a></p></body></html>", nullptr));
+        lblMessage->setText(QCoreApplication::translate("ClientChatWidget", "\320\241\320\276\320\276\320\261\321\211\320\265\320\275\320\270\320\265", nullptr));
+        btnSend->setText(QCoreApplication::translate("ClientChatWidget", "\320\236\321\202\320\277\321\200\320\260\320\262\320\270\321\202\321\214", nullptr));
+        lblOpenFolder->setText(QCoreApplication::translate("ClientChatWidget", "<html><head/><body><p><a href=\"#\"><span style=\" text-decoration: underline; color:#007af4;\">\320\236\321\202\320\272\321\200\321\213\321\202\321\214</span></a></p></body></html>", nullptr));
     } // retranslateUi
 
 };

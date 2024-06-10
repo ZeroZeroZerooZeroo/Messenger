@@ -1,9 +1,6 @@
 #include "ClientChatWidget.h"
 #include "ui_ClientChatWidget.h"
 
-#include <QMessageBox>
-#include <QDesktopServices>
-
 ClientChatWidget::ClientChatWidget(QTcpSocket *client, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ClientChatWidget)
@@ -21,6 +18,7 @@ ClientChatWidget::ClientChatWidget(QTcpSocket *client, QWidget *parent) :
 
     dir.mkdir(_client->name()); // Создание директории с именем клиента
     dir.setPath("./" + _client->name()); // Установка пути директории
+    loadMessageHistory(_client->name()); // Загрузка истоии клиента
 }
 
 void ClientChatWidget::disconnect()
@@ -30,7 +28,12 @@ void ClientChatWidget::disconnect()
 
 ClientChatWidget::~ClientChatWidget()
 {
-    delete ui; // Удаление UI
+    delete ui;
+}
+
+void ClientChatWidget::clearMessageHistory()
+{
+    ui->lstMessages->clear(); // Очистка списка сообщений
 }
 
 void ClientChatWidget::clientDisconnected()
@@ -40,10 +43,48 @@ void ClientChatWidget::clientDisconnected()
 
 void ClientChatWidget::on_btnSend_clicked()
 {
-    auto message = ui->lnMessage->text().trimmed(); // Получение текста сообщения и его обрезка
+    auto message = ui->lnMessage->text().trimmed(); // Получение текста сообщения
     _client->sendMessage(message); // Отправка сообщения
     ui->lnMessage->setText(""); // Очистка текстового поля
     ui->lstMessages->addItem(message); // Добавление сообщения в список сообщений
+}
+
+// Метод для загрузки истории сообщений
+void ClientChatWidget::loadMessageHistory(const QString &clientName) {
+
+    QSqlDatabase db = QSqlDatabase::database();
+
+    // Объект для выполнения SQL-запросов
+    QSqlQuery query;
+
+    // Запрос выбирает отправителя, сообщение и время для сообщений, где отправитель или получатель равен заданному имени пользователя
+    query.prepare("SELECT sender, message, timestamp FROM messages WHERE sender = ? OR receiver = ? ORDER BY timestamp");
+
+    // Привязка значение clientName к первому параметру запроса
+    query.addBindValue(clientName);
+
+    // Привязка значение clientName ко второму параметру запроса (для receiver)
+    query.addBindValue(clientName);
+
+    if (query.exec()) {
+        // Если запрос выполнен успешно
+        while (query.next()) {
+            // Получение значения поля "sender" как строку
+            QString sender = query.value(0).toString();
+
+            // ППолучение значения поля "message" как строку
+            QString message = query.value(1).toString();
+
+            // Получение значения поля "timestamp" как строку
+            QString timestamp = query.value(2).toString();
+
+            // Добавление сообщение в lstMessages
+            ui->lstMessages->addItem(QString("[%1] %2: %3").arg(timestamp, sender, message));
+        }
+    } else {
+        // Если запрос не удалось выполнить
+        qDebug() << "Ошибка: невозможно выбрать сообщения" << query.lastError().text();
+    }
 }
 
 void ClientChatWidget::textMessageReceived(QString message, QString receiver)
@@ -58,38 +99,43 @@ void ClientChatWidget::textMessageReceived(QString message, QString receiver)
 
 void ClientChatWidget::onTyping()
 {
-    emit isTyping(QString("%1 is typing...").arg(_client->name())); // Отправка сигнала о наборе текста
+    emit isTyping(QString("%1 печатает. . .").arg(_client->name())); // Отправка сигнала о наборе текста
 }
-
 
 void ClientChatWidget::onInitReceivingFile(QString clientName, QString fileName, qint64 fileSize)
 {
-    auto message = QString("Client (%1) wants to send a file. Do you want to accept it?\nFile Name:%2\nFile Size: %3 bytes")
+    auto message = QString("Клиент (%1) хочет отправить файл. Вы хотите его принять?\nИмя файла:%2\nРазмер файла: %3 байта")
                        .arg(clientName, fileName)
                        .arg(fileSize); // Формирование сообщения о предложении получения файла
-    auto result = QMessageBox::question(this, "Receiving File", message); // Показ диалога с вопросом о приеме файла
+    auto result = QMessageBox::question(this, "Получение файла", message); // Показ диалога с вопросом о приеме файла
     if (result == QMessageBox::Yes) { // Если пользователь согласен
         _client->sendAcceptFile(); // Отправка запроса на прием файла
     } else {
         _client->sendRejectFile(); // Отправка запроса на отклонение файла
     }
-
 }
 
 void ClientChatWidget::onFileSaved(QString path)
 {
-    auto message = QString("File saved here:\n%1").arg(path); // Формирование сообщения о сохранении файла
-    QMessageBox::information(this, "File saved", message); // Показ диалога с информацией о сохранении файла
+    auto message = QString("Файл сохранен здесь:\n%1").arg(path); // Формирование сообщения о сохранении файла
+    QMessageBox::information(this, "Файл сохранен.", message); // Показ диалога с информацией о сохранении файла
 }
 
 void ClientChatWidget::on_lblOpenFolder_linkActivated(const QString &link)
 {
-    QDesktopServices::openUrl(QUrl::fromLocalFile(_client->name())); // Открытие директории клиента с помощью стандартных средств ОС
+    QDesktopServices::openUrl(QUrl::fromLocalFile(_client->name())); // Открытие директории клиента
 }
 
 void ClientChatWidget::onClientNameChanged(QString prevName, QString name)
 {
+    // Очистка текущего окна истории сообщений
+    clearMessageHistory();
+
+    // Загруска истории сообщений для нового клиента
+    loadMessageHistory(name);
+
     QFile::rename(dir.canonicalPath(), name); // Переименование директории клиента
+
     emit clientNameChanged(prevName, name); // Отправка сигнала об изменении имени клиента
 }
 
